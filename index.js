@@ -18,9 +18,9 @@ mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost:27017/e-com").the
     console.log("Mongodb connected");
 })
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+// app.get('/', (req, res) => {
+//     res.send('Hello World!');
+// });
 
 // app.listen(4000, () => {
 //     console.log("Server listening on port 4000");
