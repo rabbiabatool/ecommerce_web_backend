@@ -5,6 +5,7 @@ const path= require("path");
 const mongoose= require('mongoose');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 
@@ -12,7 +13,8 @@ const jwt = require('jsonwebtoken');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb://localhost:27017/e-com").then(()=>{
+
+mongoose.connect(process.env.URL).then(()=>{
     console.log("Mongodb connected");
 })
 
