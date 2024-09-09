@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // mongoose.connect("mongodb+srv://rabbiabatool875:0xxq5tFIGb5ZJaSk@cluster0.dfxy06s.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0")
 
-mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost:27017/e-com").then(()=>{
+mongoose.connect("mongodb://localhost:27017/e-com").then(()=>{
     console.log("Mongodb connected");
 })
 
