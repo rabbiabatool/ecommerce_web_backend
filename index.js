@@ -14,9 +14,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect(process.env.URL).then(()=>{
-    console.log("Mongodb connected");
-})
+// mongoose.connect(process.env.URL).then(()=>{
+//     console.log("Mongodb connected");
+// })
 
 app.post('/create-checkout-session', async (req, res) => {
     
