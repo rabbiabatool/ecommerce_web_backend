@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // mongoose.connect("mongodb+srv://rabbiabatool875:0xxq5tFIGb5ZJaSk@cluster0.dfxy06s.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0")
 
-mongoose.connect("mongodb://localhost:27017/e-com").then(()=>{
+mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost:27017/e-com").then(()=>{
     console.log("Mongodb connected");
 })
 
@@ -22,6 +22,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+// app.listen(4000, () => {
+//     console.log("Server listening on port 4000");
+// });
 
 
 app.post('/create-checkout-session', async (req, res) => {
@@ -363,9 +366,7 @@ app.post('/remove_order',async (req,res) =>{
 })
 
 
-app.listen(4000, () => {
-    console.log("Server listening on port 4000");
-});
+
 
 
 app.use(errHandler);
