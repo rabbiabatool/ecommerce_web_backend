@@ -359,7 +359,7 @@ app.post('/remove_order',async (req,res) =>{
 
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
-app.listen(4000, () => console.log("Server ready on port 4000."));
+app.listen(process.env.PORT, () => console.log("Server ready on port 4000."));
 
 module.exports = app;
 
