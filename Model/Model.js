@@ -23,11 +23,11 @@ const productScheme = new mongoose.Schema({
             required: true,
         },
         new_price:{
-            type: Number,
+            type: String,
             required: true,
         },
         old_price:{
-            type: Number,
+            type: String,
             required: true,
         },
         date:{
@@ -62,5 +62,7 @@ const userSchema= new mongoose.Schema({
     
 });
 
-module.exports= mongoose.model("Product",productScheme);
-module.exports=mongoose.model("users",userSchema);
+const products = mongoose.model("products", productScheme);
+const users = mongoose.model("users", userSchema);
+
+module.exports = { products, users };

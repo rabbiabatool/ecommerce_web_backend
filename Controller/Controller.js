@@ -1,13 +1,13 @@
-const users=require("../Model/Model");
-const Product=require("../Model/Model");
+const {users}=require("../Model/Model");
+const {products}=require("../Model/Model");
 
-const multer = require("multer");
-const path= require("path");
+// const multer = require("multer");
+// const path= require("path");
 // const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const stripe = require('stripe')( "sk_test_51Phy2JAfxtUK8Ufa8ePivAyNIfRalMRJZDOLN8mCHHICS73VUhL8iWd6BPwjaRphPue6fUeTUW7G6gttEtYYYwJz00tEgfDF8X");
 
 // const app=require("../index");
-
 
 
 
@@ -34,7 +34,7 @@ module.exports.createCheckout=async (req, res) => {
                     name: e.name,
                     image: [e.image], // Image is not a valid field for product_data
                 },
-                unit_amount: Math.round(e.new_price * 100),
+                unit_amount: Math.round(Number(e.new_price) * 100),
             }, // Convert to cents
             quantity: 1,
         };
@@ -53,48 +53,15 @@ module.exports.createCheckout=async (req, res) => {
 };
 
 
-const storage = multer.diskStorage({
-    destination: './upload/images',
-    filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 100000000000000
-    }
-})
-
-module.exports.Upload=upload.single('profile'), (req,res) => {
-
-    res.json(
-        {
-            success: 1,
-            profile_url: `http://localhost:4000/images/${req.file.filename}`
-        }
-    )
-}
-
-function errHandler(err, req, res, next){
-    if(err instanceof multer.MulterError){
-        res.json({
-            success: 0,
-            message: err.message
-
-        })
-    }
-}
-
 
 
 module.exports.AddProduct=async (req,res)=>{
-        let products = await Product.find({});
+        let product = await products.find({});
+         let new_product=req.body;
         let id;
-        if(products.length>0)
+        if(product.length>0)
         {
-            let last_product_array = products.slice(-1);
+            let last_product_array = product.slice(-1);
             let last_product = last_product_array[0];
             id = last_product.id + 1;
         }
@@ -102,16 +69,16 @@ module.exports.AddProduct=async (req,res)=>{
         {
             id = 1;
         }
-        const product = new Product({
+        const Product = new products({
             id: id,
-            name: req.body.name,
-            image: req.body.image,
-            category: req.body.category,
-            new_price: req.body.new_price,
-            old_price: req.body.old_price,
+            name: new_product.name,
+            image: new_product.image,
+            category: new_product.category,
+            new_price: new_product.new_price,
+            old_price: new_product.old_price
         });
-        console.log(product);
-        await product.save();
+        console.log("product",product);
+        await Product.save();
         console.log("Saved");
         res.json({
             success:true,
@@ -201,7 +168,7 @@ module.exports.addlogin=async (req,res)=>{
 
 // creating api for deleting products
 module.exports.removeProducts=async (req,res)=>{
-    await Product.findOneAndDelete({id:req.body.id});
+    await products.findOneAndDelete({id:req.body.id});
     console.log("Removed");
     res.json({
         success:true,
@@ -212,24 +179,24 @@ module.exports.removeProducts=async (req,res)=>{
 
 // creating api for getting all products
 module.exports.allproducts=async (req,res)=> {
-    let products = await Product.find({});
+    let product = await products.find({});
     console.log("All products fetched");
-    res.send(products);
+    res.send(product);
 
 }
 //creating endpoint for new collection data
 module.exports.newCollect=async (req,res)=>{
 
-    let products = await Product.find({});
-    let new_collection = products.slice(0,9);
+    let product = await products.find({});
+    let new_collection = product.slice(0,9);
     console.log("New collections fetched");
     res.send(new_collection);
 }
 // creating end point for popular section
 module.exports.Popular=async (req,res)=>{
 
-    let products = await Product.find({category:"women"});
-    let collection = products.slice(-4);
+    let product = await products.find({category:"women"});
+    let collection = product.slice(-4);
     console.log("New collections fetched");
     res.send(collection);
 }
